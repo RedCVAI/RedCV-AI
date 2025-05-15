@@ -62,6 +62,12 @@ red-cv-ai/
 
 RED CV AI ditujukan untuk para pencari kerja yang ingin meningkatkan kualitas CV mereka melalui analisis otomatis berbasis machine learning.
 
+Fitur Utama :
+ - Analisis Konten CV: RedCV-AI memindai dan mengevaluasi isi CV untuk memastikan struktur dan kualitasnya.
+ - Skor Kinerja CV: Menghitung skor atau penilaian CV berdasarkan kualitas penulisan dan kesesuaian dengan posisi pekerjaan yang diincar.
+ - Dukungan Berbagai Format: Mendukung format file umum seperti PDF dan DOCX untuk memudahkan pengunggahan CV.
+ - Integrasi AI Canggih: Memanfaatkan model machine learning untuk analisis CV yang akurat.
+
 ---
 
 ## 🤝 Contributing
