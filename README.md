@@ -1,27 +1,80 @@
-# RED CV AI
 
-RED CV AI is an AI-powered resume analyzer that helps job applicants improve their CVs using intelligent feedback and career insights.
+# 🔴 RED CV AI
 
-## 🔧 Project Structure
-- `frontend/`: React-based UI for user interaction
-- `backend/`: Flask API handling logic and communication
-- `machine-learning/`: ML models for analyzing and scoring resumes
+![Last Commit](https://img.shields.io/github/last-commit/RedCVAI/red-cv-ai)
+![Contributors](https://img.shields.io/github/contributors/RedCVAI/red-cv-ai)
+![Issues](https://img.shields.io/github/issues/RedCVAI/red-cv-ai)
+![Repo size](https://img.shields.io/github/repo-size/RedCVAI/red-cv-ai)
+
+> ✨ AI-powered Resume Analyzer to help users improve the quality of their CVs and increase job interview readiness.
+
+---
+
+## 📁 Project Structure
+
+```
+red-cv-ai/
+├── frontend/           # React/HTML frontend
+├── backend/            # Flask/FastAPI backend
+├── machine-learning/   # ML models, training notebooks
+├── .gitignore
+├── README.md
+```
+
+---
 
 ## 🚀 Features
-- Upload CV (PDF)
-- Analyze CV with ML model
-- Get improvement suggestions
-- Track resume scores
 
-## 📁 Folder Guide
-See each subfolder for more info:
-- [`frontend`](./frontend/)
-- [`backend`](./backend/)
-- [`machine-learning`](./machine-learning/)
+- ✨ Upload resume for analysis
+- 💡 Get score and suggestions to improve CV
+- 🔎 Integrated Machine Learning model
+- 🌐 Clean and responsive frontend (HTML/React)
+- 📊 Real-time feedback system
 
-## 🤝 Team Members
-- Your name (Machine Learning, Lead)
-- Partner’s name (Frontend, Backend)
+---
 
-## 📌 Status
-Capstone project in progress.
+## 🛠️ Tech Stack
+
+- **Frontend:** React / HTML / CSS
+- **Backend:** Flask / FastAPI
+- **ML:** Scikit-learn / Pandas / Jupyter
+- **Deployment:** GitHub Pages + Render / Railway
+
+---
+
+## 🌱 Getting Started
+
+1. **Clone this repo**
+   ```bash
+   git clone https://github.com/RedCVAI/red-cv-ai.git
+   ```
+
+2. **Navigate to folders:**
+   - `frontend/`: run `npm install` then `npm start`
+   - `backend/`: run Python API using Flask
+   - `machine-learning/`: explore notebooks or training code
+
+3. **Run locally** or deploy with GitHub Pages/Render.
+
+---
+
+## 🧠 Use Case
+
+RED CV AI ditujukan untuk para pencari kerja yang ingin meningkatkan kualitas CV mereka melalui analisis otomatis berbasis machine learning.
+
+---
+
+## 🤝 Contributing
+
+1. Fork repository  
+2. Buat branch (`git checkout -b fitur-baru`)  
+3. Commit perubahan (`git commit -m 'Add fitur A'`)  
+4. Push ke branch (`git push origin fitur-baru`)  
+5. Buka Pull Request  
+
+---
+
+## 📬 Contact
+
+Made with ❤️ by [@RedCVAI](https://github.com/RedCVAI)  
+Untuk pertanyaan, silakan DM atau buka Issue ya!
