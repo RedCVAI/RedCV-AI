@@ -46,7 +46,7 @@ red-cv-ai/
 
 1. **Clone this repo**
    ```bash
-   git clone https://github.com/RedCVAI/RedCV-A.git
+   git clone https://github.com/RedCVAI/RedCV-AI.git
    ```
 
 2. **Navigate to folders:**
