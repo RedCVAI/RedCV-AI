@@ -1,1 +1,1 @@
-# A Resume Analysis Platform with Frontend, Backend, and Machine Learning modules
+# Resume Analysis Platform with Frontend, Backend, and Machine Learning modules
