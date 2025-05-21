@@ -1,14 +1,12 @@
 # 🧠 RedCV AI – Backend
 
-**RedCV AI** adalah backend server berbasis Node.js yang menyediakan API untuk menganalisis dan mengelola Curriculum Vitae (CV) secara cerdas menggunakan AI. Dibangun dengan arsitektur modular menggunakan Hapi.js, project ini mendukung upload CV, autentikasi pengguna, dan integrasi model analisis CV berbasis AI.
+**RedCV AI** adalah backend server berbasis Node.js yang menyediakan API untuk menganalisis dan mengelola Curriculum Vitae (CV) menggunakan Kecerdasan Buatan (AI). Dibangun dengan arsitektur modular menggunakan Hapi.js, project ini mendukung upload CV, autentikasi pengguna, dan integrasi model analisis CV berbasis AI.
 
 ---
 
-## 📁 Struktur Direktori
+🎯 Tujuan Proyek (di atas)
 
-# 🧠 RedCV AI – Backend
-
-**RedCV AI** adalah backend server berbasis Node.js yang menyediakan API untuk menganalisis dan mengelola Curriculum Vitae (CV) secara cerdas menggunakan AI. Dibangun dengan arsitektur modular menggunakan Hapi.js, project ini mendukung upload CV, autentikasi pengguna, dan integrasi model analisis CV berbasis AI.
+RedCV AI bertujuan membantu perusahaan atau recruiter dalam menganalisis isi CV kandidat secara otomatis menggunakan model AI. Sistem ini mempermudah proses screening awal dan pengambilan keputusan berdasarkan informasi yang disarikan dari file PDF CV.
 
 ---
 
@@ -16,37 +14,47 @@
 
 backend/
 ├── src/
-│ ├── config/
-│ │ ├── db.js # Inisialisasi koneksi MySQL
-│ │ └── db.config.js # Load variabel koneksi dari .env
-│ ├── routes/
-│ │ ├── auth.routes.js # API: /auth/register, /auth/login
-│ │ ├── cv.routes.js # API: /cv/upload, /cv/:id
-│ │ └── ai.routes.js # API: /ai/analyze, /ai/train
-│ ├── controllers/
+│ ├── config/ # Konfigurasi database dan koneksi ke MySQL
+│ │ ├── db.js
+│ │ └── db.config.js
+│ ├── controllers/ # Menangani request & response dari setiap Endpoint
 │ │ ├── auth.controller.js
 │ │ ├── cv.controller.js
 │ │ └── ai.controller.js
-│ ├── services/
-│ │ ├── auth.service.js
-│ │ ├── cv.service.js
-│ │ └── ai.service.js
-│ ├── middleware/
-│ │ ├── auth.middleware.js # Validasi JWT
-│ │ └── upload.middleware.js # Validasi & parsing file
-│ ├── models/
-│ │ ├── user.model.js # Skema dan query user
-│ │ ├── cv.model.js # Skema dan query CV
-│ │ └── analysis.model.js # Skema dan query hasil analisis
-│ ├── migrations/
-│ │ └── init-schema.sql # SQL inisialisasi tabel MySQL
-│ └── utils/
-│ └── response.helper.js # Fungsi bantu untuk response API
-├── .env # Konfigurasi DB & token (DB_HOST, DB_USER, ...)
-├── .gitignore # Ignore node_modules, .env, dll.
-├── package.json # Dependensi dan script npm
-├── server.js # Entry point: setup Hapi server & koneksi DB
-└── README.md # Dokumentasi singkat backend
+│ ├── db/ # Koneksi ke Database
+│ ├── helpers/ # Fungsi bantu seperti enkripsi dan JWT
+│ │ ├── encrpyt.js
+│ │ ├── jwt.js
+│ ├── middleware/ # Melakukan autentikasi dan upload
+│ │ ├── auth-middleware.js
+│ │ ├── upload-middleware.js
+│ ├── migrations/ # SQL untuk inisialiasi struktur database
+│ │ ├── init.shema.sql
+│ ├── models/ # Struktur data/ORM model untuk entity
+│ │ ├── analysis-mode.js
+│ │ ├── cv-model.js
+│ │ └── user-model.js
+│ ├── routes/ # Routing untuk setiap Endpoint yang tersedia
+│ │ ├── ai-routes.js
+│ │ ├── auth-routes.js
+│ │ └── cv-routes.js
+│ ├── seeders/ # Populate data awal ke database
+│ │ ├── 20250521000100-seedUsers.js
+│ │ ├── 20250521000200-seedCVs.js
+│ │ ├── 20250521000300-seedAnalysisResults.js
+│ ├── services/ # Logika bisnis utama (pemrosesan, verifikasi, AI call)
+│ │ ├── ai-service.js
+│ │ ├── auth-service.js
+│ │ └── cv-service.js
+│ ├── utils/ # Helper umum, seperti format response standar
+│ │ ├── response-helper.js
+├── .env
+├── .gitignore
+├── app.js # Inisialisasi aplikasi & plugin Hapi.js
+├── package-lock.json
+├── package.json
+├── server.js
+└── README.md
 
 🛠️ Stack Teknologi
 
@@ -59,18 +67,36 @@ backend/
 7. nodemon – Auto-restart saat development
 
 📌 API Endpoint Penting
-🔐 Auth - POST /auth/register – Registrasi user - POST /auth/login – Login & dapatkan JWT - POST /auth/logout - Logout pengguna (opsional jika pakai token-based) - GET /auth/me - Mendapatkan detail user yang sedang login (via JWT)
+🔐 Auth
 
-    📄 CV
-    - POST /cv/upload – Upload file CV
-    - GET /cv/:id – Ambil data CV spesifik
-    - GET /analyst/:cvId - Ambil hasil analisis CV
-    - GET /analyst/all - Lihat semua riwayat analisis
+- POST /auth/register – Registrasi user
+- POST /auth/login – Login & dapatkan JWT
+- POST /auth/logout - Logout pengguna (opsional jika pakai token-based)
+- GET /auth/me - Mendapatkan detail user yang sedang login (via JWT)
 
-    🧠 AI
-    - POST /ai/analyze – Analisis konten CV
+📄 CV
+
+- POST /cv/upload – Upload file CV
+- GET /cv/:id – Ambil data CV spesifik
+- GET /analyst/:cvId - Ambil hasil analisis CV
+- GET /analyst/all - Lihat semua riwayat analisis
+
+🧠 AI
+
+- POST /ai/analyze – Analisis konten CV
+
+## 🚀 Cara Menjalankan
+
+1. Clone repo
+2. Instal Dependensi dengan menjalankan `npm install`
+3. Copy `.env.example` ke `.env` dan sesuaikan isinya
+4. Jalankan database MySQL
+5. Jalankan migrasi dan seeder (jika pakai Sequelize CLI):
+   - npx sequelize-cli db:migrate
+   - npx sequelize-cli db:seed:all
+6. Jalankan server:
+   - npm run dev
 
 📄 Lisensi
 
 Jika kamu ingin file README ini langsung saya perbarui ke dalam file `README.md` yang sudah kamu upload, tinggal beri izin saja dan saya bantu langsung ubah isinya.
-
