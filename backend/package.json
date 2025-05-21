@@ -1,12 +1,12 @@
 {
   "name": "project_backend_redcv_ai_dicoding",
   "version": "1.0.0",
-  "description": "backend/\r ├── src/\r │   ├── config/\r │   │   ├── db.js                 # Inisialisasi koneksi MySQL\r │   │   └── db.config.js         # Load variabel koneksi dari .env\r │   ├── routes/\r │   │   ├── auth.routes.js       # API: /auth/register, /auth/login\r │   │   ├── cv.routes.js         # API: /cv/upload, /cv/:id\r │   │   └── ai.routes.js         # API: /ai/analyze, /ai/train\r │   ├── controllers/\r │   │   ├── auth.controller.js\r │   │   ├── cv.controller.js\r │   │   └── ai.controller.js\r │   ├── services/\r │   │   ├── auth.service.js\r │   │   ├── cv.service.js\r │   │   └── ai.service.js\r │   ├── middleware/\r │   │   ├── auth.middleware.js    # Validasi JWT\r │   │   └── upload.middleware.js  # Validasi & parsing file\r │   ├── models/\r │   │   ├── user.model.js         # Skema dan query user\r │   │   ├── cv.model.js           # Skema dan query CV\r │   │   └── analysis.model.js     # Skema dan query hasil analisis\r │   ├── migrations/\r │   │   └── init-schema.sql       # SQL inisialisasi tabel MySQL\r │   └── utils/\r │       └── response.helper.js    # Fungsi bantu untuk response API\r ├── .env                           # Konfigurasi DB & token (DB_HOST, DB_USER, ...)\r ├── .gitignore                     # Ignore node_modules, .env, dll.\r ├── package.json                   # Dependensi dan script npm\r ├── server.js                      # Entry point: setup Hapi server & koneksi DB\r └── README.md                      # Dokumentasi singkat backend",
-  "main": "index.js",
+  "description": "Backend untuk RedCV AI",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"No tests defined yet\"",
     "start": "node src/server.js",
-    "start-dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test:db": "node src/config/test-db.js"
   },
   "keywords": [],
   "author": "",

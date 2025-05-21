@@ -53,7 +53,7 @@ backend/
 ├── app.js # Inisialisasi aplikasi & plugin Hapi.js
 ├── package-lock.json
 ├── package.json
-├── server.js
+├── server.js # Pengaturan server Hapi
 └── README.md
 
 🛠️ Stack Teknologi
