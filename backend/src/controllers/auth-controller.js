@@ -32,17 +32,28 @@ module.exports = {
     try {
       const { email, password } = request.payload;
       const user = await User.findOne({ where: { email } });
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return errorResponse(h, "Invalid credentials", 401);
+      if (!user) {
+        return errorResponse(h, "Email tidak ditemukan", 401);
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return errorResponse(h, "Password salah, Silahkan mencoba lagi", 401);
       }
       const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: "1h", algorithm: "HS256" }
       );
-      return successResponse(h, { token }, "Login successful", 200);
+      return successResponse(
+        h,
+        { token },
+        "Berhasil login, password benar",
+        200
+      );
     } catch (error) {
-      return errorResponse(h, "Login failed", 400);
+      console.error("Login error:", error);
+      return errorResponse(h, "Login failed: " + error.message, 500);
     }
   },
 
