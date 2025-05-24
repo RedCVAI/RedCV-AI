@@ -12,6 +12,12 @@ module.exports = [
     options: {
       validate: {
         payload: validateRegister,
+        failAction: (request, h, err) => {
+          return h.response({
+            status: "fail",
+            message: `Validation failed: ${err.details[0].message}`,
+          }).code(400).takeover();
+        },
       },
     },
   },

@@ -20,7 +20,11 @@ module.exports = {
         201
       );
     } catch (error) {
-      return errorResponse(h, "Registration failed", 400);
+      console.error("Registration error:", error);
+      if (error.name === "SequelizeUniqueConstraintError") {
+        return errorResponse(h, "Email already registered", 400);
+      }
+      return errorResponse(h, `Registration failed: ${error.message}`, 500);
     }
   },
 
