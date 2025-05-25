@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user-model");
-const BlacklistedToken = require("../models/blacklisted-token-model");
 const { successResponse, errorResponse } = require("../utils/response-helper");
 
 module.exports = {
@@ -66,25 +65,6 @@ module.exports = {
       return successResponse(h, user, "User retrieved successfully", 200);
     } catch (error) {
       return errorResponse(h, "Failed to retrieve user", 400);
-    }
-  },
-
-  logout: async (request, h) => {
-    try {
-      // Ambil header Authorization
-      const authorization = request.headers.authorization;
-      if (!authorization || !authorization.startsWith("Bearer ")) {
-        return errorResponse(h, "Authorization header missing or invalid", 401);
-      }
-
-      // Ambil token dari header
-      const token = authorization.replace("Bearer ", "");
-      // Simpan token ke blacklisted_tokens
-      await BlacklistedToken.create({ token });
-      return successResponse(h, null, "Logout successful", 200);
-    } catch (error) {
-      console.error("Logout error:", error);
-      return errorResponse(h, "Logout failed: " + error.message, 500);
     }
   },
 };

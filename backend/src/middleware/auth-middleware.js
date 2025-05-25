@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const User = require("../models/user-model");
-const BlacklistedToken = require("../models/blacklisted-token-model");
 
 const validateRegister = Joi.object({
   name: Joi.string().min(3).allow(null),
@@ -33,13 +32,6 @@ const registerAuthStrategy = async (server) => {
     validate: async (artifacts, request, h) => {
       try {
         const token = artifacts.token;
-        const isBlacklisted = await BlacklistedToken.findOne({
-          where: { token },
-        });
-        if (isBlacklisted) {
-          return { isValid: false };
-        }
-
         const user = await User.findByPk(artifacts.decoded.payload.id);
         if (!user) {
           return { isValid: false };

@@ -29,10 +29,3 @@ CREATE TABLE analysis_results (
   analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (cv_id) REFERENCES cvs(id) ON DELETE CASCADE
 );
-
--- Tabel untuk token yang dibatalkan
-CREATE TABLE blacklisted_tokens (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  token VARCHAR(512) NOT NULL UNIQUE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

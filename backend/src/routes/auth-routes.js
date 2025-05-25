@@ -13,10 +13,13 @@ module.exports = [
       validate: {
         payload: validateRegister,
         failAction: (request, h, err) => {
-          return h.response({
-            status: "fail",
-            message: `Validation failed: ${err.details[0].message}`,
-          }).code(400).takeover();
+          return h
+            .response({
+              status: "fail",
+              message: `Validation failed: ${err.details[0].message}`,
+            })
+            .code(400)
+            .takeover();
         },
       },
     },
@@ -39,12 +42,4 @@ module.exports = [
       auth: "jwt",
     },
   },
-  {
-    method: "POST",
-    path: "/auth/logout",
-    handler: AuthController.logout,
-    options: {
-      auth: "jwt",
-    },
-  }
 ];
