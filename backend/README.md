@@ -27,7 +27,7 @@ backend/
 │ │ ├── jwt.js
 │ ├── middleware/ # Melakukan autentikasi dan upload
 │ │ ├── auth-middleware.js
-│ │ ├── upload-middleware.js
+│ │ ├── upload-middleware.jsx
 │ ├── migrations/ # SQL untuk inisialiasi struktur database
 │ │ ├── init.shema.sql
 │ ├── models/ # Struktur data/ORM model untuk entity

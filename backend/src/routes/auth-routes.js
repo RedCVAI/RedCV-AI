@@ -39,4 +39,12 @@ module.exports = [
       auth: "jwt",
     },
   },
+  {
+    method: "POST",
+    path: "/auth/logout",
+    handler: AuthController.logout,
+    options: {
+      auth: "jwt",
+    },
+  }
 ];
