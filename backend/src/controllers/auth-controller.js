@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { hashPassword, comparePassword } = require("../helpers/encrypt");
+const { generateToken } = require("../helpers/jwt");
 const User = require("../models/user-model");
 const { successResponse, errorResponse } = require("../utils/response-helper");
 
@@ -7,7 +7,7 @@ module.exports = {
   register: async (request, h) => {
     try {
       const { name, email, password } = request.payload;
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await hashPassword(password, 10);
       const user = await User.create({
         name,
         email,
@@ -36,21 +36,13 @@ module.exports = {
         return errorResponse(h, "Email tidak ditemukan", 401);
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await comparePassword(password, user.password);
       if (!isPasswordValid) {
         return errorResponse(h, "Password salah, Silahkan mencoba lagi", 401);
       }
-      const token = jwt.sign(
-        { id: user.id, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h", algorithm: "HS256" }
-      );
-      return successResponse(
-        h,
-        { token },
-        "Berhasil login, password benar",
-        200
-      );
+
+      const token = generateToken({ id: user.id, email: user.email });
+      return successResponse(h, { token }, "Login successful", 200);
     } catch (error) {
       console.error("Login error:", error);
       return errorResponse(h, "Login failed: " + error.message, 500);
