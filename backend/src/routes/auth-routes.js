@@ -1,34 +1,27 @@
+const Authcontroller = require("../controllers/auth-controller");
 const {
   validateRegister,
   validateLogin,
 } = require("../middleware/auth-middleware");
-const AuthController = require("../controllers/auth-controller");
 
 module.exports = [
   {
     method: "POST",
     path: "/auth/register",
-    handler: AuthController.register,
+    handler: Authcontroller.register,
     options: {
+      auth: false,
       validate: {
         payload: validateRegister,
-        failAction: (request, h, err) => {
-          return h
-            .response({
-              status: "fail",
-              message: `Validation failed: ${err.details[0].message}`,
-            })
-            .code(400)
-            .takeover();
-        },
       },
     },
   },
   {
     method: "POST",
     path: "/auth/login",
-    handler: AuthController.login,
+    handler: Authcontroller.login,
     options: {
+      auth: false,
       validate: {
         payload: validateLogin,
       },
@@ -37,7 +30,7 @@ module.exports = [
   {
     method: "GET",
     path: "/auth/me",
-    handler: AuthController.getMe,
+    handler: Authcontroller.getMe,
     options: {
       auth: "jwt",
     },

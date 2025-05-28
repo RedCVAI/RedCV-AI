@@ -13,11 +13,8 @@ const validateLogin = Joi.object({
 });
 
 const registerAuthStrategy = async (server) => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined in .env");
-  }
-
   await server.register(require("@hapi/jwt"));
+
   server.auth.strategy("jwt", "jwt", {
     keys: {
       key: process.env.JWT_SECRET,
@@ -31,18 +28,28 @@ const registerAuthStrategy = async (server) => {
     },
     validate: async (artifacts, request, h) => {
       try {
-        const token = artifacts.token;
+        console.log("JWT validate:", {
+          id: artifacts.decoded.payload.id,
+          token: artifacts.token,
+          timestamp: new Date().toISOString(),
+        });
         const user = await User.findByPk(artifacts.decoded.payload.id);
         if (!user) {
+          console.log("User not found:", artifacts.decoded.payload.id);
           return { isValid: false };
         }
-        return { isValid: true, credentials: user };
+        return { isValid: true, credentials: { id: user.id } };
       } catch (error) {
         console.error("JWT validation error:", error.message);
         return { isValid: false };
       }
     },
   });
+  server.auth.default("jwt");
 };
 
-module.exports = { validateRegister, validateLogin, registerAuthStrategy };
+module.exports = {
+  validateRegister,
+  validateLogin,
+  registerAuthStrategy,
+};
