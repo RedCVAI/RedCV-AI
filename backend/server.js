@@ -6,6 +6,7 @@ const { registerAuthStrategy } = require("./src/middleware/auth-middleware");
 // Import Route
 const routes = require("./src/routes/auth-routes");
 const CVRoutes = require("./src/routes/cv-routes");
+const aiRoutes = require("./src/routes/ai-routes");
 
 const init = async () => {
   console.log("server time at start:", new Date().toISOString(), "WIB");
@@ -34,6 +35,7 @@ const init = async () => {
   console.log("Mendaftarkan rute...");
   server.route(routes);
   server.route(CVRoutes);
+  server.route(aiRoutes);
 
   // Tangani error autentikasi
   server.ext("onPreResponse", (request, h) => {
