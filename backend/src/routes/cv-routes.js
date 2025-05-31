@@ -41,16 +41,12 @@ module.exports = [
           }
 
           request.file = data;
+          console.log("request.file before controller:", request.file); // debugging
           const cv = await CVController.uploadCV(request);
-          return h.response(cv).code(201);
+          return successResponse(h, cv, "CV upload successfully", 201);
         } catch (error) {
-          console.log("Handler error:", error.message);
-          return h
-            .response({
-              status: "fail",
-              message: error.message,
-            })
-            .code(500);
+          console.log("POST /cv/upload error:", error.message, error.stack);
+          return errorResponse(h, error.message, error.statusCode || 500);
         }
       },
     },

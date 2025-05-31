@@ -6,25 +6,28 @@ class CVController {
   async uploadCV(request) {
     try {
       const { file } = request;
-      const { id } = request.auth.credentials;
+      const { id: userId } = request.auth.credentials;
 
       if (!file) {
-        throw new Error("No file uploaded");
+        const error = new Error("No file uploaded");
+        error.statusCode = 400;
+        throw error;
       }
 
-      // Simpan buffer ke disk
-      const filename = `${Date.now()}-${file.originalname}`;
-      const filePath = `uploads/${filename}`;
-      await fs.writeFile(filePath, file.buffer);
+      // Dengan diskStorage, file sudah disimpan oleh Multer
+      const filename = file.filename;
+      const filePath = file.path;
 
-      const cv = await CVService.saveCV(id, filename, filePath);
+      const cv = await CVService.saveCV(userId, filename, filePath);
       return {
-        status: "success",
-        message: "CV uploaded successfully",
-        data: { cvId: cv.id, filename: cv.file_name },
+        id: cv.id,
+        user_id: cv.user_id,
+        file_name: cv.file_name,
+        file_path: cv.file_path,
+        upload_at: cv.uploaded_at,
       };
     } catch (error) {
-      throw new Error(error.message);
+      throw error;
     }
   }
   async getCvById(request, h) {
