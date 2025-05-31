@@ -14,7 +14,7 @@
 
 ```
 red-cv-ai/
-├── frontend/           # React/HTML frontend
+├── frontend/           # HTML, CSS, JS
 ├── backend/            # Flask/FastAPI backend
 ├── machine-learning/   # ML models, training notebooks
 ├── .gitignore
@@ -35,7 +35,7 @@ red-cv-ai/
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React / HTML / CSS
+- **Frontend:** HTML / CSS / JS
 - **Backend:** Flask / FastAPI
 - **ML:** Scikit-learn / Pandas / Jupyter
 - **Deployment:** GitHub Pages + Render / Railway
@@ -50,7 +50,7 @@ red-cv-ai/
    ```
 
 2. **Navigate to folders:**
-   - `frontend/`: run `npm install` then `npm start`
+   - `frontend/`: run `npm install` then `npm run dev`
    - `backend/`: run Python API using Flask
    - `machine-learning/`: explore notebooks or training code
 
