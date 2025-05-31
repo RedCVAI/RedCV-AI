@@ -1,5 +1,9 @@
 const CVController = require("../controllers/cv-controller");
+const CVService = require("../services/cv-service");
 const { upload } = require("../middleware/upload-middleware");
+const Joi = require("joi");
+const responseHelper = require("../utils/response-helper");
+const { successResponse, errorResponse } = responseHelper;
 
 module.exports = [
   {
@@ -36,7 +40,6 @@ module.exports = [
               .code(400);
           }
 
-          const { id } = request.auth.credentials;
           request.file = data;
           const cv = await CVController.uploadCV(request);
           return h.response(cv).code(201);
@@ -48,6 +51,43 @@ module.exports = [
               message: error.message,
             })
             .code(500);
+        }
+      },
+    },
+  },
+  {
+    method: "GET",
+    path: "/cv/{id}",
+    options: {
+      auth: "jwt",
+      description: "Get CV by ID",
+      tags: ["api", "cv"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().integer().required().description("CV ID"),
+        }),
+      },
+      handler: async (request, h) => {
+        try {
+          console.log("Processing GET /cv/{id} with params:", request.params);
+          const { id } = request.params;
+          const { id: userId } = request.auth.credentials;
+
+          const cv = await CVService.getCvById(userId, id);
+          if (!cv) {
+            return errorResponse(h, "cv not found or access denied", 404);
+          }
+
+          const responseData = {
+            cvId: cv.id,
+            filename: cv.file_name,
+            filePath: cv.file_path,
+            uploadAt: cv.upload_at,
+          };
+          return successResponse(h, responseData, "CV retrieved successfully");
+        } catch (error) {
+          console.log("GET /cv/{id} error:", error.message, error.stack); // tambah stack untuk debugging
+          return errorResponse(h, error.message, error.statusCode || 500);
         }
       },
     },

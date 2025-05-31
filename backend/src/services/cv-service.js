@@ -14,6 +14,27 @@ class CVService {
       throw new Error(`Failed to save CV: ${error.message}`);
     }
   }
+
+  static async getCvById(userId, cvId) {
+    try {
+      const cv = await CV.findOne({
+        where: {
+          id: cvId,
+          user_id: userId,
+        },
+      });
+      
+      if (!cv) {
+        const error = new Error("CV not found or access denied");
+        error.statusCode = 404;
+        throw error;
+      }
+
+      return cv;
+    } catch (error) {
+      throw new Error(`Failed to retrieve CV: ${error.message}`);
+    }
+  }
 }
 
 module.exports = CVService;

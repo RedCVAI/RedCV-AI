@@ -17,6 +17,8 @@ backend/
 │ ├── config/ # Konfigurasi database dan koneksi ke MySQL
 │ │ ├── db.js
 │ │ └── db.config.js
+│ │ ├── sequelize.js
+│ │ ├── test-db.js
 │ ├── controllers/ # Menangani request & response dari setiap Endpoint
 │ │ ├── auth.controller.js
 │ │ ├── cv.controller.js
@@ -48,6 +50,7 @@ backend/
 │ │ └── cv-service.js
 │ ├── utils/ # Helper umum, seperti format response standar
 │ │ ├── response-helper.js
+├── uploads/
 ├── .env
 ├── .gitignore
 ├── app.js # Inisialisasi aplikasi & plugin Hapi.js

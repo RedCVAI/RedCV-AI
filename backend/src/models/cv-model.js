@@ -23,7 +23,7 @@ const CV = sequelize.define(
     },
     file_path: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     uploaded_at: {
       type: DataTypes.DATE,
