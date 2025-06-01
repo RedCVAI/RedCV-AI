@@ -1,8 +1,8 @@
-const CVService = require("../services/cv-service");
-const AnalysisResult = require("../models/analysis-model");
 const Joi = require("joi");
-const responseHelper = require("../utils/response-helper");
-const { successResponse, errorResponse } = responseHelper;
+const {
+  analyzeCVHandler,
+  getAnalysisResultHandler,
+} = require("../controllers/ai-controller");
 
 module.exports = [
   {
@@ -11,56 +11,28 @@ module.exports = [
     options: {
       auth: "jwt",
       description: "Analyze CV with AI",
-      Tags: ["api", "ai"],
+      tags: ["api", "ai"],
       validate: {
         payload: Joi.object({
           cvId: Joi.number().integer().required().description(" CV ID"),
         }),
       },
-      handler: async (request, h) => {
-        try {
-          const { cvId } = request.payload;
-          const { id: userId } = request.auth.credentials;
-
-          // Verifikasi CV ada dan milik pengguna
-          const cv = await CVService.getCvById(userId, cvId);
-          if (!cv) {
-            return errorResponse(h, "CV not found or access denied", 404);
-          }
-
-          // Mock data untuk simulasi hasil analisis AI
-          const aiResult = {
-            score: Math.floor(Math.random() * 21) + 80,
-            commment: "Well-structured CV with relevant experience",
-            suggestions: [
-              "Add quantifiable achievements",
-              "Improve formatting for clarity",
-            ],
-          };
-
-          // Simpan hasil analisis ke database
-          const analysis = await AnalysisResult.create({
-            cv_id: cvId,
-            analysis_data: aiResult,
-            analyzed_at: new Date(),
-          });
-
-          return seccessResponse(
-            h,
-            {
-              analysisId: analysis.id,
-              cvId: analysis.cv_id,
-              analysisData: analysis.analysis_data,
-              analyzedAt: analysis.analyzed_at,
-            },
-            "CV analyzed successfully",
-            201
-          );
-        } catch (error) {
-          console.log("POST /ai/analyze error", error.message);
-          return errorResponse(h, error.message, error.statusCode || 500);
-        }
+      handler: analyzeCVHandler,
+    },
+  },
+  {
+    method: "GET",
+    path: "/analyst/{cvId}",
+    options: {
+      auth: "jwt",
+      description: "Get CV analysis result by cvId",
+      tags: ["api", "ai"],
+      validate: {
+        params: Joi.object({
+          cvId: Joi.number().integer().required().description("CV ID"),
+        }),
       },
+      handler: getAnalysisResultHandler,
     },
   },
 ];

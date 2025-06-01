@@ -20,18 +20,18 @@ backend/
 │ │ ├── sequelize.js
 │ │ ├── test-db.js
 │ ├── controllers/ # Menangani request & response dari setiap Endpoint
+│ │ └── ai.controller.js
 │ │ ├── auth.controller.js
 │ │ ├── cv.controller.js
-│ │ └── ai.controller.js
 │ ├── db/ # Koneksi ke Database
+│ │ └── init-schema.sql
 │ ├── helpers/ # Fungsi bantu seperti enkripsi dan JWT
 │ │ ├── encrpyt.js
 │ │ ├── jwt.js
 │ ├── middleware/ # Melakukan autentikasi dan upload
 │ │ ├── auth-middleware.js
 │ │ ├── upload-middleware.js
-│ ├── migrations/ # SQL untuk inisialiasi struktur database
-│ │ ├── init.shema.sql
+│ ├── migrations/
 │ ├── models/ # Struktur data/ORM model untuk entity
 │ │ ├── analysis-mode.js
 │ │ ├── cv-model.js
@@ -53,11 +53,14 @@ backend/
 ├── uploads/
 ├── .env
 ├── .gitignore
+├── .sequelizerc
+├── api-auth-documentation.json
 ├── app.js # Inisialisasi aplikasi & plugin Hapi.js
 ├── package-lock.json
 ├── package.json
-├── server.js # Pengaturan server Hapi
-└── README.md
+├── README.md
+├── test-analysis-model.js
+└── server.js # Pengaturan server Hapi
 
 🛠️ Stack Teknologi
 

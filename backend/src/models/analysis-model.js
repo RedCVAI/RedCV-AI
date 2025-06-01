@@ -29,10 +29,10 @@ const AnalysisResult = sequelize.define(
   },
   {
     tableName: "analysis_results",
-    timetamps: false,
+    timestamps: false,
   }
 );
 
-AnalysisResult.belongsTo(CV, { foregnKey: "cv_id" });
+AnalysisResult.belongsTo(CV, { foreignKey: "cv_id" });
 
 module.exports = AnalysisResult;
