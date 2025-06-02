@@ -1,0 +1,170 @@
+{
+  "info": {
+    "_postman_id": "44898162-81345527-7d6c-4e3a-9534-202f17e9463f",
+    "name": "RedCV AI API Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12297972"
+  },
+  "item": [
+    {
+      "name": "[Mandatory] Analyze CV with AI",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('message');",
+              "    pm.expect(responseJson).to.haveOwnProperty('data');",
+              "    pm.expect(responseJson.status).to.equals('success');",
+              "    pm.expect(responseJson.message).to.equals('Analisis CV berhasil');",
+              "    pm.expect(responseJson.data).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body data should contain analysis result', () => {",
+              "    const responseJson = pm.response.json();",
+              "    const { data } = responseJson;",
+              "    pm.expect(data).to.haveOwnProperty('id');",
+              "    pm.expect(data).to.haveOwnProperty('cv_id');",
+              "    pm.expect(data).to.haveOwnProperty('analysis_data');",
+              "    pm.expect(data).to.haveOwnProperty('analyzed_at');",
+              "    pm.expect(data.cv_id).to.equals(parseInt(pm.environment.get('cvId')));",
+              "    pm.expect(data.analysis_data).to.be.an('object');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('score');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('comment');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('suggestions');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"cvId\": {{cvId}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:{{port}}/analyst/ai",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["analyst", "ai"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[Mandatory] Analyze CV with AI - Invalid Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 401', () => {",
+              "    pm.response.to.have.status(401);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('message');",
+              "    pm.expect(responseJson.status).to.equals('fail');",
+              "    pm.expect(responseJson.message).to.equals('Token tidak valid');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "invalid_token",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"cvId\": {{cvId}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:{{port}}/analyst/ai",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["analyst", "ai"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ]
+}

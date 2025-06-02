@@ -1,0 +1,363 @@
+{
+  "info": {
+    "_postman_id": "44898162-47da7f2b-cfd9-4423-a240-6e83b648b1d7",
+    "name": "RedCV CV API Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12297972"
+  },
+  "item": [
+    {
+      "name": "[Mandatory] Upload CV File",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('message');",
+              "    pm.expect(responseJson).to.haveOwnProperty('data');",
+              "    pm.expect(responseJson.status).to.equals('success');",
+              "    pm.expect(responseJson.message).to.equals('CV berhasil diunggah');",
+              "    pm.expect(responseJson.data).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body data should contain cvId', () => {",
+              "    const responseJson = pm.response.json();",
+              "    const { data } = responseJson;",
+              "    pm.expect(data).to.haveOwnProperty('cvId');",
+              "    pm.expect(data.cvId).to.be.a('number');",
+              "    pm.environment.set('cvId', data.cvId);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "cv",
+              "type": "file",
+              "src": "/path/to/sample.pdf"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:{{port}}/cv/upload",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["cv", "upload"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[Mandatory] Get CV Details by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('data');",
+              "    pm.expect(responseJson.status).to.equals('success');",
+              "    pm.expect(responseJson.data).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body data should contain CV details', () => {",
+              "    const responseJson = pm.response.json();",
+              "    const { data } = responseJson;",
+              "    pm.expect(data).to.haveOwnProperty('id');",
+              "    pm.expect(data).to.haveOwnProperty('user_id');",
+              "    pm.expect(data).to.haveOwnProperty('file_name');",
+              "    pm.expect(data).to.haveOwnProperty('file_path');",
+              "    pm.expect(data).to.haveOwnProperty('uploaded_at');",
+              "    pm.expect(data.id).to.equals(parseInt(pm.environment.get('cvId')));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{port}}/cv/{{cvId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["cv", "{{cvId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[Mandatory] Get Analysis Result by CV ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('data');",
+              "    pm.expect(responseJson.status).to.equals('success');",
+              "    pm.expect(responseJson.data).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body data should contain analysis result', () => {",
+              "    const responseJson = pm.response.json();",
+              "    const { data } = responseJson;",
+              "    pm.expect(data).to.haveOwnProperty('id');",
+              "    pm.expect(data).to.haveOwnProperty('cv_id');",
+              "    pm.expect(data).to.haveOwnProperty('analysis_data');",
+              "    pm.expect(data).to.haveOwnProperty('analyzed_at');",
+              "    pm.expect(data.cv_id).to.equals(parseInt(pm.environment.get('cvId')));",
+              "    pm.expect(data.analysis_data).to.be.an('object');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('score');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('comment');",
+              "    pm.expect(data.analysis_data).to.haveOwnProperty('suggestions');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{port}}/analyst/{{cvId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["analyst", "{{cvId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[Mandatory] Get All Analysis Results",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('data');",
+              "    pm.expect(responseJson.status).to.equals('success');",
+              "    pm.expect(responseJson.data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('response body data should contain analysis results', () => {",
+              "    const responseJson = pm.response.json();",
+              "    const { data } = responseJson;",
+              "    if (data.length > 0) {",
+              "        data.forEach(analysis => {",
+              "            pm.expect(analysis).to.haveOwnProperty('id');",
+              "            pm.expect(analysis).to.haveOwnProperty('cv_id');",
+              "            pm.expect(analysis).to.haveOwnProperty('analysis_data');",
+              "            pm.expect(analysis).to.haveOwnProperty('analyzed_at');",
+              "            pm.expect(analysis.analysis_data).to.be.an('object');",
+              "            pm.expect(analysis.analysis_data).to.haveOwnProperty('score');",
+              "            pm.expect(analysis.analysis_data).to.haveOwnProperty('comment');",
+              "            pm.expect(analysis.analysis_data).to.haveOwnProperty('suggestions');",
+              "        });",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{port}}/analyst/all",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["analyst", "all"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[Mandatory] Get All Analysis Results with Invalid Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code should be 401', () => {",
+              "    pm.response.to.have.status(401);",
+              "});",
+              "",
+              "pm.test('response header Content-Type should be application/json', () => {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body should have correct property and value', () => {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.haveOwnProperty('status');",
+              "    pm.expect(responseJson).to.haveOwnProperty('message');",
+              "    pm.expect(responseJson.status).to.equals('fail');",
+              "    pm.expect(responseJson.message).to.equals('Token tidak valid');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "invalid_token",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{port}}/analyst/all",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "{{port}}",
+          "path": ["analyst", "all"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ]
+}
