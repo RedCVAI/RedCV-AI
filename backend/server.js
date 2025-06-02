@@ -7,6 +7,7 @@ const { registerAuthStrategy } = require("./src/middleware/auth-middleware");
 const routes = require("./src/routes/auth-routes");
 const CVRoutes = require("./src/routes/cv-routes");
 const aiRoutes = require("./src/routes/ai-routes");
+const analystRoutes = require("./src/routes/analyst-route");
 
 const init = async () => {
   console.log("server time at start:", new Date().toISOString(), "WIB");
@@ -36,6 +37,7 @@ const init = async () => {
   server.route(routes);
   server.route(CVRoutes);
   server.route(aiRoutes);
+  server.route(analystRoutes);
 
   // Tangani error autentikasi
   server.ext("onPreResponse", (request, h) => {

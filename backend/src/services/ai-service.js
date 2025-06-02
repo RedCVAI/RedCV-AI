@@ -1,6 +1,7 @@
 const CVService = require("./cv-service");
 const AnalysisResult = require("../models/analysis-model");
-const { analyzeCV } = require("./ai.analysis");
+const { analyzeCV } = require("./ai-analysis");
+const CV = require("../models/cv-model");
 
 const analyzeCVService = async (userId, cvId) => {
   // Verifikasi CV ada dan milik pengguna
@@ -67,4 +68,36 @@ const getAnalysisResultByCVId = async (userId, cvId) => {
   };
 };
 
-module.exports = { analyzeCVService, getAnalysisResultByCVId };
+const getAllAnalysesByUserId = async (userId) => {
+  console.log("getAllAnalysesByUserId called with:", [userId]);
+
+  // Query untuk mengambil semua hasil analisis dengan join ke tabel cvs
+  const analyses = await AnalysisResult.findAll({
+    where: {
+      "$CV.user_id$": userId, // Filter berdasarkan user_id di tabel CV
+    },
+    include: [
+      {
+        model: CV, // Gunakan model CV langsung
+        required: true, // Inner join untuk memastikan hanya CV milik pengguna
+        attributes: [], // Tidak ambil kolom dari CV
+      },
+    ],
+    attributes: ["id", "cv_id", "analysis_data", "analyzed_at"],
+    order: [["analyzed_at", "DESC"]],
+  });
+
+  // Format hasil untuk konsisten
+  return analyses.map((analysis) => ({
+    id: analysis.id,
+    cv_id: analysis.cv_id,
+    analysis_data: analysis.analysis_data,
+    analyzed_at: analysis.analyzed_at,
+  }));
+};
+
+module.exports = {
+  analyzeCVService,
+  getAnalysisResultByCVId,
+  getAllAnalysesByUserId,
+};

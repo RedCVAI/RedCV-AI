@@ -3,7 +3,6 @@ const { generateToken } = require("../helpers/jwt");
 const User = require("../models/user-model");
 
 const registerUser = async ({ name, email, password }) => {
-  console.log("RegisterUser called with:", { name, email });
   const hashedPassword = await hashPassword(password, 10);
   const user = await User.create({
     name,

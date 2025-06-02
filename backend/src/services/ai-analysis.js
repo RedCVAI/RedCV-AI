@@ -9,9 +9,9 @@ const analyzeCV = (cvData) => {
     "teamwork",
     "leadership",
   ];
-  let score = 0;
+  let score = 90;
   const analysisData = {
-    score: 0,
+    score: 90,
     comment: "",
     suggestions: [],
   };
