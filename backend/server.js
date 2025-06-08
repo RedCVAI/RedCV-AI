@@ -15,6 +15,11 @@ const init = async () => {
   const server = Hapi.server({
     port: process.env.PORT || 3000,
     host: "localhost",
+    routes: {
+      payload: {
+        output: "stream", // Pastikan payload tetap sebagai stream untuk multipart
+      },
+    },
   });
 
   // Daftarkan strategi autentikasi
