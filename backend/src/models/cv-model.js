@@ -25,6 +25,14 @@ const CV = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    degree: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    profesion: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     uploaded_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

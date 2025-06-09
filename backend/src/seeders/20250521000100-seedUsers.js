@@ -13,13 +13,6 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
-        {
-          name: "Hendro Cahyono",
-          email: "Hendro Cahyono@gmail.com",
-          password: await bcrypt.hash("password123", 10),
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
       ],
       {}
     );

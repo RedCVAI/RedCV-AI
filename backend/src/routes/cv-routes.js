@@ -17,7 +17,7 @@ const multerHandler = (handler) => async (request, h) => {
     // Log detail request untuk debugging
     console.log("Request method:", request.raw.req.method);
     console.log("Request headers:", request.raw.req.headers);
-    console.log("Content-Length:", request.raw.req.headers['content-length']);
+    console.log("Content-Length:", request.raw.req.headers["content-length"]);
     console.log("Request readable:", request.raw.req.readable);
     console.log("Request body available:", !!request.raw.req.body);
 
@@ -29,12 +29,12 @@ const multerHandler = (handler) => async (request, h) => {
 
     // Pastikan stream masih dapat dibaca
     if (request.raw.req.readable) {
-      let rawData = '';
-      request.raw.req.on('data', (chunk) => {
+      let rawData = "";
+      request.raw.req.on("data", (chunk) => {
         console.log("Receiving raw data chunk:", chunk.length, "bytes");
         rawData += chunk;
       });
-      request.raw.req.on('end', () => {
+      request.raw.req.on("end", () => {
         console.log("Raw request data (end):", rawData.slice(0, 500)); // Batasi log
       });
     } else {
@@ -42,8 +42,12 @@ const multerHandler = (handler) => async (request, h) => {
       return reject(new Error("No readable stream available for request"));
     }
 
-    if (!request.raw.req.headers['content-type']?.includes('multipart/form-data')) {
-      const error = new Error("Invalid Content-Type: Expected multipart/form-data");
+    if (
+      !request.raw.req.headers["content-type"]?.includes("multipart/form-data")
+    ) {
+      const error = new Error(
+        "Invalid Content-Type: Expected multipart/form-data"
+      );
       console.error("Multer error:", error.message);
       return reject(error);
     }
@@ -63,7 +67,7 @@ const multerHandler = (handler) => async (request, h) => {
       console.log("Parsed form data:", {
         cv: !!request.payload.cv,
         degree: formData.degree,
-        profesion: formData.profesion
+        profesion: formData.profesion,
       });
       resolve(handler(request, h));
     });
@@ -130,8 +134,8 @@ module.exports = [
             profesion,
           });
 
-          const cvResult = await CVController.uploadCV(request);
-          return successResponse(h, cvResult, "CV uploaded successfully", 201);
+          const cvResult = await CVController.uploadCV(request, h);
+          return cvResult;
         } catch (error) {
           console.log("POST /cv/upload error:", error.message, error.stack);
           return errorResponse(

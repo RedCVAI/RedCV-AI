@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/sequelize");
-const { underscoredIf } = require("sequelize/lib/utils");
 
 const User = sequelize.define(
   "User",
@@ -29,7 +28,6 @@ const User = sequelize.define(
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    underscored: true,
   }
 );
 

@@ -5,7 +5,7 @@ const FormData = require("form-data");
 const { successResponse, errorResponse } = require("../utils/response-helper");
 
 class CVController {
-  async uploadCV(request) {
+  async uploadCV(request, h) {
     try {
       const { file, degree, profesion } = request.payload;
       const { id: userId } = request.auth.credentials;
@@ -51,14 +51,38 @@ class CVController {
         profesion,
       });
 
-      const flaskResponse = await Axios.post(
-        "http://localhost:7860/api/v1/analyze-file",
-        formData,
-        {
-          headers: {
-            ...formData.getHeaders(),
-          },
-        }
+      let flaskResponse;
+      try {
+        flaskResponse = await Axios.post(
+          "http://localhost:7860/api/v1/analyze-file",
+          formData,
+          {
+            headers: {
+              ...formData.getHeaders(),
+            },
+          }
+        );
+        console.log("Flask response:", flaskResponse.data);
+      } catch (axiosError) {
+        console.error("Flask request error:", {
+          message: axiosError.message,
+          response: axiosError.response ? axiosError.response.data : null,
+          status: axiosError.response ? axiosError.response.status : null,
+        });
+        const error = new Error("Failed to analyze file with Flask");
+        error.statusCode = axiosError.response
+          ? axiosError.response.status
+          : 500;
+        error.flaskError = axiosError.response
+          ? axiosError.response.data
+          : axiosError.message;
+        throw error;
+      }
+
+      // Simpan hasil analisis ke tabel analysis_results
+      const analysisResult = await CVService.saveAnalysisResult(
+        cv.id,
+        flaskResponse.data
       );
 
       // Gabungkan data CV dan hasil analisis Flask
@@ -67,21 +91,37 @@ class CVController {
         user_id: cv.user_id,
         file_name: cv.file_name,
         file_path: cv.file_path,
+        degree: cv.degree,
+        profesion: cv.profesion,
         upload_at: cv.uploaded_at,
-        analysis: flaskResponse.data, // Respon dari flask
+        analysis: {
+          analysis_id: analysisResult.id,
+          cv_id: analysisResult.cv_id,
+          analysis_data: analysisResult.analysis_data,
+          analyzed_at: analysisResult.analyzed_at,
+        },
       };
 
-      return responseData;
+      return successResponse(
+        h,
+        responseData,
+        "CV uploaded and analyzed successfully",
+        201
+      );
     } catch (error) {
-      // Jika error dari Flask, ambil status code dari respons
-      const statusCode = error.response?.status || error.statusCode || 500;
+      // Error handling tanpa akses error.response langsung
+      const statusCode = error.statusCode || 500;
+      const errorMessage = error.message || "Internal server error";
+      const flaskError = error.flaskError || null;
+
       console.error("Error in uploadCV:", {
-        message: error.message,
+        message: errorMessage,
         statusCode,
-        flaskError: error.response?.data,
+        flaskError,
+        stack: error.stack,
       });
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(errorMessage, { cause: { statusCode } });
+
+      return errorResponse(h, errorMessage, statusCode);
     }
   }
   async getCvById(request, h) {
@@ -100,7 +140,9 @@ class CVController {
           cvId: cv.id,
           filename: cv.file_name,
           filepath: cv.file_path,
-          uploadAt: cv.upload_at,
+          degree: cv.degree,
+          profesion: cv.profesion,
+          uploadAt: cv.uploaded_at,
         },
         "CV retrieved successfully"
       );

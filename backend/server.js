@@ -4,7 +4,7 @@ const Hapi = require("@hapi/hapi");
 const { registerAuthStrategy } = require("./src/middleware/auth-middleware");
 
 // Import Route
-const routes = require("./src/routes/auth-routes");
+const authRoutes = require("./src/routes/auth-routes");
 const CVRoutes = require("./src/routes/cv-routes");
 const aiRoutes = require("./src/routes/ai-routes");
 const analystRoutes = require("./src/routes/analyst-route");
@@ -17,7 +17,10 @@ const init = async () => {
     host: "localhost",
     routes: {
       payload: {
-        output: "stream", // Pastikan payload tetap sebagai stream untuk multipart
+        output: "data",
+        parse: true,
+        allow: ["application/json", "multipart/form-data"],
+        maxBytes: 1048576,
       },
     },
   });
@@ -39,7 +42,7 @@ const init = async () => {
 
   // Daftarkan rute
   console.log("Mendaftarkan rute...");
-  server.route(routes);
+  server.route(authRoutes);
   server.route(CVRoutes);
   server.route(aiRoutes);
   server.route(analystRoutes);
@@ -47,6 +50,15 @@ const init = async () => {
   // Tangani error autentikasi
   server.ext("onPreResponse", (request, h) => {
     const response = request.response;
+
+    if (response.isBoom && response.output.statusCode === 400) {
+      console.error("400 Bad Request:", {
+        path: request.path,
+        payload: request.payload,
+        validationMessage: response.message,
+      });
+    }
+
     if (response.isBoom && response.output.statusCode === 401) {
       console.log("401 Error:", {
         path: request.path,
