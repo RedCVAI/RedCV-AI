@@ -1,4 +1,4 @@
-![Logo_RedCV_AI](https://your-logo-url.com) <!-- Ganti dengan URL logo jika ada -->
+![Logo_RedCV_AI](https://github.com/RedCVAI/RedCV-AI/blob/main/public/logo.png)
 
 # Our Team
 |         Nama         |  Cohort-ID   |               Path               |
