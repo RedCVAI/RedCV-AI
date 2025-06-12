@@ -1,6 +1,6 @@
 ![Logo_RedCV_AI](https://github.com/RedCVAI/RedCV-AI/blob/main/public/logo.png)
 
-# Our Team - CC25-CF214
+# Our Team (CC25-CF214)
 |         Nama         |  Cohort-ID   |               Path               |
 |----------------------|--------------|----------------------------------|
 | Wahyu Pelita Jaya    | MC865D5Y2251 | Machine Learning Engineer        |
