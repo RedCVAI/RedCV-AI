@@ -1,9 +1,14 @@
+require("dotenv").config();
 "use strict";
 
 const Hapi = require("@hapi/hapi");
 const { registerAuthStrategy } = require("./src/middleware/auth-middleware");
 
-// Import Route
+const setupAssociations = require("./src/models/relationship"); // <-- Sesuaikan path jika berbeda
+
+const sequelize = require('./src/config/sequelize');
+
+
 const authRoutes = require("./src/routes/auth-routes");
 const CVRoutes = require("./src/routes/cv-routes");
 const aiRoutes = require("./src/routes/ai-routes");
@@ -14,8 +19,12 @@ const init = async () => {
 
   const server = Hapi.server({
     port: process.env.PORT || 3000,
-    host: "localhost",
+    host: "0.0.0.0",
     routes: {
+      cors: {
+        origin: ["http://localhost:8080", 'https://frontend-redcv.vercel.app'],
+        additionalHeaders: ['cache-control', 'x-requested-with', 'authorization'],
+      },
       payload: {
         output: "data",
         parse: true,
@@ -25,11 +34,22 @@ const init = async () => {
     },
   });
 
-  // Daftarkan strategi autentikasi
+  setupAssociations(); // <--- BARIS KRUSIAL INI!
+  console.log('DEBUG: Sequelize model associations have been set up.');
+
+
+  try {
+    await sequelize.authenticate();
+    console.log('DEBUG: Connection to database has been established successfully.');
+  } catch (error) {
+    console.error('ERROR: Unable to connect to the database:', error);
+    process.exit(1); // Keluar jika koneksi DB gagal
+  }
+
+
   console.log("Mendaftarkan strategi autentikasi...");
   await registerAuthStrategy(server);
 
-  // Debugging autentikasi
   server.ext("onPreAuth", (request, h) => {
     if (request.path === "/cv/upload") {
       console.log("onPreAuth /cv/upload", {
@@ -40,14 +60,12 @@ const init = async () => {
     return h.continue;
   });
 
-  // Daftarkan rute
   console.log("Mendaftarkan rute...");
   server.route(authRoutes);
   server.route(CVRoutes);
   server.route(aiRoutes);
   server.route(analystRoutes);
 
-  // Tangani error autentikasi
   server.ext("onPreResponse", (request, h) => {
     const response = request.response;
 

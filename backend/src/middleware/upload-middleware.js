@@ -3,12 +3,10 @@ const path = require("path");
 const fs = require("fs");
 require("dotenv").config();
 
-// Gunakan UPLOAD_DIR dari .env atau fallback ke path relatif
 const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "uploads");
 console.log("Current workinng directory:", process.cwd());
 console.log("Upload directory dikonfigurasi:", uploadDir);
 
-// Pastikan folder uploads/ ada
 if (!fs.existsSync(uploadDir)) {
   try {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -19,7 +17,6 @@ if (!fs.existsSync(uploadDir)) {
   }
 }
 
-// Verifikasi izin menulis
 try {
   fs.accessSync(uploadDir, fs.constants.W_OK);
   console.log("Folder uploads/ dapat ditulis");
@@ -52,12 +49,12 @@ const fileFilter = (req, file, cb) => {
   const allowedExtensions = [".pdf", ".docx"];
   const ext = path.extname(file.originalname).toLowerCase();
   if (allowedExtensions.includes(ext)) {
-    console.log("File diterima:", file.originalname); // Log file diterima
+    console.log("File diterima:", file.originalname);
     cb(null, true);
   } else {
     const error = new Error("Only .pdf and .docx files are allowed");
     error.statusCode = 400;
-    console.error("File ditolak:", file.originalname); // Log file ditolak
+    console.error("File ditolak:", file.originalname);
     cb(error, false);
   }
 };
