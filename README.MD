@@ -55,10 +55,10 @@ Model dikembangkan untuk:
 - Evaluasi struktur & format CV
 
 ### Fullstack Development
-- **Frontend**: Next.js (React Framework)
-- **Backend**: Express.js (Node.js Framework)
-- **Database**: Supabase (PostgreSQL)
-- **Deployment**: Vercel & Hugging Face Spaces (opsional untuk ML model)
+- **Frontend**: html, css js
+- **Backend**: Hapi js
+- **Database**: Mysql
+- **Deployment**: Hugging Face Spaces (opsional untuk ML model)
 
 ---
 
@@ -69,14 +69,21 @@ Model dikembangkan untuk:
 npm install
 ```
 
+*Import file `initschema.sql` ke dalam database:
+```bash
+Import db initschema.sql
+```
+
 2. **Siapkan file `.env`**
 ```env
-DATABASE_URL=YOUR_DATABASE_SUPABASE_URL
-DIRECT_URL=YOUR_DIRECT_DATABASE_SUPABASE_URL
-BETTER_AUTH_SECRET=YOUR_SECRET
-BETTER_AUTH_URL=YOUR_AUTH_URL
-NEXT_PUBLIC_SUPABASE_URL=YOUR_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+PORT=3000
+JWT_SECRET=your_jwt_secret_key
+
+DB_HOST=your_database_host
+DB_PORT=your_database_port
+DB_USER=your_database_user
+DB_PASS=your_database_password
+DB_NAME=your_database_name
 ```
 
 3. **Jalankan dalam mode development**
