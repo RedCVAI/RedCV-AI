@@ -102,7 +102,3 @@ backend/
    - npx sequelize-cli db:seed:all
 6. Jalankan server:
    - npm run dev
-
-📄 Lisensi
-
-Jika kamu ingin file README ini langsung saya perbarui ke dalam file `README.md` yang sudah kamu upload, tinggal beri izin saja dan saya bantu langsung ubah isinya.
